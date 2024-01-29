@@ -1,0 +1,45 @@
+﻿<Page x:Class="Wordlee.Views.Pages.AuthorizationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Wordlee.Views.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="500"
+      Title="Authorization">
+
+    <Grid>
+        <StackPanel VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <StackPanel DataContext="{Binding ThisUser}" Margin="0 15">
+                <TextBlock Text="Логин"/>
+                <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Пароль"/>
+                <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            <TextBlock
+                HorizontalAlignment="Center"
+                Foreground="Red"
+                Text="{Binding Error}"/>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Button 
+                    Content="Войти"
+                    Background="#FF16E416"
+                    Width="105"
+                    Command="{Binding LoginCommand}"/>
+                <Button
+                    Background="#FFF1A8F1"
+                    Content="Войти как гость"
+                    Width="105"
+                    Command="{Binding GuestCommand}"/>
+            </StackPanel>
+            <Button
+                Background="Transparent"
+                BorderBrush="Transparent"
+                HorizontalAlignment="Center"
+                Content="Зарегистрироваться"
+                Command="{Binding RegistrationCommand}"/>
+        </StackPanel>
+    </Grid>
+</Page>
