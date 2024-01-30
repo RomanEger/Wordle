@@ -24,6 +24,17 @@ namespace Wordlee.ViewModels
             }
         }
 
+        private string _secondPassword;
+        public string SecondPassword
+        {
+            get => _secondPassword;
+            set
+            {
+                _secondPassword = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _error;
         public string Error
         {
@@ -81,7 +92,33 @@ namespace Wordlee.ViewModels
         {
             get
             {
-                return _registrationCommand ??= new RelayCommand(obj => { });
+                return _registrationCommand ??= new RelayCommand(obj => 
+                {
+                    MyFrame.Navigate(new RegistrationPage());
+                });
+            }
+        }
+
+        private RelayCommand _regCommand;
+        public RelayCommand RegCommand
+        {
+            get
+            {
+                return _regCommand ??= new RelayCommand(obj =>
+                {
+                    if(DbClass.entities.Users.Any(x => x.Login == ThisUser.Login))
+                    {
+                        Error = $"Этот логин ({ThisUser.Login}) уже занят, попробуйте еще раз.";
+                        ThisUser.Login = null;
+                        ThisUser.Password = null;
+                        SecondPassword = null;
+                    }
+                    else
+                    {
+                        DbClass.entities.Users.Add(ThisUser);
+                        DbClass.entities.SaveChanges();
+                    }
+                });
             }
         }
 

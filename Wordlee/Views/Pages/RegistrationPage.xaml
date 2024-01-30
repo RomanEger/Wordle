@@ -9,20 +9,34 @@
       Title="RegistrationPage">
 
     <Grid>
+        <Button 
+             VerticalAlignment="Top"
+             Grid.Column="3"
+             HorizontalAlignment="Right"
+             Background="Transparent"
+             BorderBrush="Red"
+             BorderThickness="1"
+             Foreground="Red"
+             Width="90"
+             Click="Button_Click"
+             Content="Выйти" Cursor="Hand"/>
         <StackPanel VerticalAlignment="Center"
              HorizontalAlignment="Center">
-            <StackPanel DataContext="{Binding ThisUser}" Margin="0 15">
+            <StackPanel DataContext="{Binding ThisUser}" Margin="0">
                 <TextBlock Text="Логин"/>
                 <TextBox Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Text="Пароль"/>
                 <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
-                <TextBlock Text="Повторите пароль"/>
-                <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
+            <TextBlock Text="Повторите пароль"/>
+            <TextBox Text="{Binding SecondPassword, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock
-         HorizontalAlignment="Center"
-         Foreground="Red"
-         Text="{Binding Error}"/>
+                 HorizontalAlignment="Center"
+                 Foreground="Red"
+                 Text="{Binding Error}"/>
+            <Button 
+                Content="Создать аккаунт"
+                Command="{Binding RegCommand}"/>
         </StackPanel>
     </Grid>
 </Page>

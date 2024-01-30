@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Wordlee.Services;
+using Wordlee.ViewModels;
 
 namespace Wordlee.Views.Pages
 {
@@ -24,6 +26,9 @@ namespace Wordlee.Views.Pages
         {
             InitializeComponent();
             Application.Current.MainWindow.Width = 500;
+            DataContext = new UserViewModel();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e) => MyFrame.Exit();
     }
 }
