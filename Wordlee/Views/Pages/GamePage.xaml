@@ -46,50 +46,52 @@
                 Content="Выйти" Cursor="Hand"/>
         <StackPanel Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="0 5">
             <StackPanel Margin="15" Orientation="Horizontal">
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
+                <TextBox Name="tb00"/>
+                <TextBox Name="tb01"/>
+                <TextBox Name="tb02"/>
+                <TextBox Name="tb03"/>
+                <TextBox Name="tb04"/>
             </StackPanel>
             <StackPanel Margin="15" Orientation="Horizontal">
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
+                <TextBox Name="tb10"/>
+                <TextBox Name="tb11"/>
+                <TextBox Name="tb12"/>
+                <TextBox Name="tb13"/>
+                <TextBox Name="tb14"/>
             </StackPanel>
             <StackPanel Margin="15" Orientation="Horizontal">
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
+                <TextBox Name="tb20"/>
+                <TextBox Name="tb21"/>
+                <TextBox Name="tb22"/>
+                <TextBox Name="tb23"/>
+                <TextBox Name="tb24"/>
             </StackPanel>
             <StackPanel Margin="15" Orientation="Horizontal">
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
+                <TextBox Name="tb30"/>
+                <TextBox Name="tb31"/>
+                <TextBox Name="tb32"/>
+                <TextBox Name="tb33"/>
+                <TextBox Name="tb34"/>
             </StackPanel>
             <StackPanel Margin="15" Orientation="Horizontal">
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
+                <TextBox Name="tb40"/>
+                <TextBox Name="tb41"/>
+                <TextBox Name="tb42"/>
+                <TextBox Name="tb43"/>
+                <TextBox Name="tb44"/>
             </StackPanel>
             <TextBox 
+                x:Name="tb"
                 Text="{Binding Word, UpdateSourceTrigger=PropertyChanged}"
                 Margin="0 15"
                 Height="25"
                 IsReadOnly="False"
                 MaxLength="5"
-                Width="200">
-                <TextBox.InputBindings>
+                Width="200"
+                KeyDown="TextBox_KeyDown">
+                <!--<TextBox.InputBindings>
                     <KeyBinding Key="Enter" Command="{Binding EnterCommand}"/>
-                </TextBox.InputBindings>
+                </TextBox.InputBindings>-->
             </TextBox>
 
         </StackPanel>
