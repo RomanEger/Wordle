@@ -36,7 +36,7 @@
                  Text="{Binding Error}"/>
             <Button 
                 Content="Создать аккаунт"
-                Command="{Binding RegCommand}"/>
+                Command="{Binding CreateAccountCommand}"/>
         </StackPanel>
     </Grid>
 </Page>

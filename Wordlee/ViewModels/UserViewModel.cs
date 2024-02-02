@@ -57,7 +57,8 @@ namespace Wordlee.ViewModels
                         User? q = DbClass.entities.Users.FirstOrDefault(x => x.Login == ThisUser.Login && x.Password == ThisUser.Password) ?? null;
                         if (q != null)
                         {
-                            MyFrame.Navigate(new MenuPage(q.Id));
+                            CurrentUser.UserId = q.Id;
+                            MyFrame.Navigate(new MenuPage());
                             ThisUser = new User();
                         }
                         else
@@ -99,12 +100,12 @@ namespace Wordlee.ViewModels
             }
         }
 
-        private RelayCommand _regCommand;
-        public RelayCommand RegCommand
+        private RelayCommand _createAccountCommand;
+        public RelayCommand CreateAccountCommand
         {
             get
             {
-                return _regCommand ??= new RelayCommand(obj =>
+                return _createAccountCommand ??= new RelayCommand(obj =>
                 {
                     if(DbClass.entities.Users.Any(x => x.Login == ThisUser.Login))
                     {

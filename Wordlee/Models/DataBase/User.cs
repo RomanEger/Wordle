@@ -7,7 +7,7 @@ using Wordlee.ViewModels;
 
 namespace Wordlee.DataBase
 {
-    class User : ViewModelBase
+    public class User : ViewModelBase
     {
         private int _id;
         public int Id

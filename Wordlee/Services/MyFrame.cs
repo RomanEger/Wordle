@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using Wordlee.Views.Pages;
 
 namespace Wordlee.Services
 {
@@ -15,6 +16,7 @@ namespace Wordlee.Services
         
         public static void ClearHistory()
         {
+            CurrentUser.UserId = null;
             while (frame.CanGoBack && frame.CanGoForward)
             {
                 try
@@ -30,7 +32,7 @@ namespace Wordlee.Services
 
         public static void Exit()
         {
-            frame.GoBack();
+            Navigate(new AuthorizationPage());
             ClearHistory();
         }
     }

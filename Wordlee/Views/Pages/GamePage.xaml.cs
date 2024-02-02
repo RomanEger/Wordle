@@ -18,25 +18,18 @@ using Wordlee.ViewModels;
 namespace Wordlee.Views.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для MenuPage.xaml
+    /// Логика взаимодействия для GamePage.xaml
     /// </summary>
-    public partial class MenuPage : Page
+    public partial class GamePage : Page
     {
-        private void OnStart()
+        public GamePage(WordViewModel vm)
         {
             InitializeComponent();
-            Application.Current.MainWindow.Width = 600;
-            Application.Current.MainWindow.Height = 350;
-            DataContext = new WordViewModel();
-        }
-
-        public MenuPage()
-        {
-            OnStart();
-            spLvl.SetValue(Grid.ColumnSpanProperty, 2);
-            spResults.Visibility = Visibility.Hidden;
+            DataContext = vm;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) => MyFrame.Exit();
+
+        private void ButtonBack_Click(object sender, RoutedEventArgs e) => MyFrame.frame.GoBack();
     }
 }

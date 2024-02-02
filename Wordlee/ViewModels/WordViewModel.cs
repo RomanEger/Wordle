@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Wordlee.Commands;
 using Wordlee.DataBase;
 using Wordlee.Models;
+using Wordlee.Services;
+using Wordlee.Views.Pages;
 
 namespace Wordlee.ViewModels
 {
-    class WordViewModel : ViewModelBase
+    public class WordViewModel : ViewModelBase
     {
         private string _selectedWord;
         public string SelectedWord
@@ -20,6 +23,19 @@ namespace Wordlee.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        private string _word;
+        public string Word
+        {
+            get => _word;
+            set
+            {
+                _word = value;
+                OnPropertyChanged();
+            }
+        }
+
+
 
         private List<Word> _listWords;
         public List<Word> ListWords
@@ -50,6 +66,7 @@ namespace Wordlee.ViewModels
             set
             {
                 _selectedIdWord = value;
+                SelectedWord = ListWords.FirstOrDefault(x => x.Id == value).WordName;
                 OnPropertyChanged();
             }
         }
@@ -61,6 +78,21 @@ namespace Wordlee.ViewModels
             foreach (var word in _listWords)
             {
                 IdWords.Add(word.Id);
+            }
+        }
+
+        private RelayCommand _startCommand;
+        public RelayCommand StartCommand =>_startCommand ??= new RelayCommand(obj => MyFrame.Navigate(new GamePage(this)));
+
+        private RelayCommand _enterCommand;
+        public RelayCommand EnterCommand
+        {
+            get
+            {
+                return _enterCommand ??= new RelayCommand(obj =>
+                {
+                    Word = string.Empty;
+                });
             }
         }
     }

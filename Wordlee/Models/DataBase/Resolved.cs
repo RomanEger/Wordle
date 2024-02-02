@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Wordlee.DataBase
 {
-    class Resolved
+    public class Resolved
     {
         public int Id { get; set; }
         public int UserId { get; set; }
