@@ -18,7 +18,7 @@ namespace Wordlee.DataBase
         public RepositoryContext()
             : base()
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -49,6 +49,14 @@ namespace Wordlee.DataBase
                 x.UserId,
                 x.WordId
             }).IsUnique();
+
+            User user = new()
+            {
+                Id = 1,
+                Login = "test",
+                Password = "test"
+            };
+            modelBuilder.Entity<User>().HasData(user);
         }
 
     }
