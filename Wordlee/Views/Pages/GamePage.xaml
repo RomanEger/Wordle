@@ -17,6 +17,8 @@
             <Setter Property="BorderBrush" Value="Black"/>
             <Setter Property="IsReadOnly" Value="True"/>
             <Setter Property="MaxLength" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
     </Page.Resources>
     <Grid>
@@ -46,39 +48,39 @@
                 Content="Выйти" Cursor="Hand"/>
         <StackPanel Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="0 5">
             <StackPanel Margin="15" Orientation="Horizontal">
-                <TextBox Name="tb00"/>
-                <TextBox Name="tb01"/>
-                <TextBox Name="tb02"/>
-                <TextBox Name="tb03"/>
-                <TextBox Name="tb04"/>
+                <TextBox Background="{Binding BColor00}" Text="{Binding L00, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor01}" Text="{Binding L01, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor02}" Text="{Binding L02, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor03}" Text="{Binding L03, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor04}" Text="{Binding L04, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <StackPanel Margin="15" Orientation="Horizontal">
-                <TextBox Name="tb10"/>
-                <TextBox Name="tb11"/>
-                <TextBox Name="tb12"/>
-                <TextBox Name="tb13"/>
-                <TextBox Name="tb14"/>
+                <TextBox Background="{Binding BColor10}" Text="{Binding L10, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor11}" Text="{Binding L11, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor12}" Text="{Binding L12, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor13}" Text="{Binding L13, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor14}" Text="{Binding L14, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <StackPanel Margin="15" Orientation="Horizontal">
-                <TextBox Name="tb20"/>
-                <TextBox Name="tb21"/>
-                <TextBox Name="tb22"/>
-                <TextBox Name="tb23"/>
-                <TextBox Name="tb24"/>
+                <TextBox Background="{Binding BColor20}" Text="{Binding L20, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor21}" Text="{Binding L21, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor22}" Text="{Binding L22, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor23}" Text="{Binding L23, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor24}" Text="{Binding L24, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <StackPanel Margin="15" Orientation="Horizontal">
-                <TextBox Name="tb30"/>
-                <TextBox Name="tb31"/>
-                <TextBox Name="tb32"/>
-                <TextBox Name="tb33"/>
-                <TextBox Name="tb34"/>
+                <TextBox Background="{Binding BColor30}" Text="{Binding L30, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor31}" Text="{Binding L31, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor32}" Text="{Binding L32, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor33}" Text="{Binding L33, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor34}" Text="{Binding L34, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <StackPanel Margin="15" Orientation="Horizontal">
-                <TextBox Name="tb40"/>
-                <TextBox Name="tb41"/>
-                <TextBox Name="tb42"/>
-                <TextBox Name="tb43"/>
-                <TextBox Name="tb44"/>
+                <TextBox Background="{Binding BColor40}" Text="{Binding L40, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor41}" Text="{Binding L41, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor42}" Text="{Binding L42, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor43}" Text="{Binding L43, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Background="{Binding BColor44}" Text="{Binding L44, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <TextBox 
                 x:Name="tb"
@@ -88,10 +90,11 @@
                 IsReadOnly="False"
                 MaxLength="5"
                 Width="200"
-                KeyDown="TextBox_KeyDown">
-                <!--<TextBox.InputBindings>
+                >
+                <!--KeyDown="TextBox_KeyDown"-->
+                <TextBox.InputBindings>
                     <KeyBinding Key="Enter" Command="{Binding EnterCommand}"/>
-                </TextBox.InputBindings>-->
+                </TextBox.InputBindings>
             </TextBox>
 
         </StackPanel>

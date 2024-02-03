@@ -24,7 +24,6 @@ namespace Wordlee.Views.Pages
     {
         private void OnStart()
         {
-            InitializeComponent();
             Application.Current.MainWindow.Width = 600;
             Application.Current.MainWindow.Height = 350;
             DataContext = new WordViewModel();
@@ -32,11 +31,20 @@ namespace Wordlee.Views.Pages
 
         public MenuPage()
         {
-            OnStart();
-            spLvl.SetValue(Grid.ColumnSpanProperty, 2);
-            spResults.Visibility = Visibility.Hidden;
+            InitializeComponent();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) => MyFrame.Exit();
+
+        private void MenuPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            OnStart();
+            
+            if (CurrentUser.UserId == null)
+            {
+                spResults.Visibility = Visibility.Hidden;
+                spLvl.SetValue(Grid.ColumnSpanProperty, 2);
+            }
+        }
     }
 }

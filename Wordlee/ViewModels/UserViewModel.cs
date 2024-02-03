@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Wordlee.Commands;
 using Wordlee.DataBase;
 using Wordlee.Models;
@@ -50,11 +51,11 @@ namespace Wordlee.ViewModels
         {
             get
             {
-                return _loginCommand ??= new RelayCommand(obj =>
+                return _loginCommand ??= new RelayCommand(async obj =>
                 {
                     try
                     {
-                        User? q = DbClass.entities.Users.FirstOrDefault(x => x.Login == ThisUser.Login && x.Password == ThisUser.Password) ?? null;
+                        var q = await DbClass.entities.Users.FirstOrDefaultAsync(x => x.Login == ThisUser.Login && x.Password == ThisUser.Password) ?? null;
                         if (q != null)
                         {
                             CurrentUser.UserId = q.Id;
@@ -105,9 +106,9 @@ namespace Wordlee.ViewModels
         {
             get
             {
-                return _createAccountCommand ??= new RelayCommand(obj =>
+                return _createAccountCommand ??= new RelayCommand(async obj =>
                 {
-                    if(DbClass.entities.Users.Any(x => x.Login == ThisUser.Login))
+                    if(await DbClass.entities.Users.AnyAsync(x => x.Login == ThisUser.Login))
                     {
                         Error = $"Этот логин ({ThisUser.Login}) уже занят, попробуйте еще раз.";
                         ThisUser.Login = null;
@@ -116,8 +117,8 @@ namespace Wordlee.ViewModels
                     }
                     else
                     {
-                        DbClass.entities.Users.Add(ThisUser);
-                        DbClass.entities.SaveChanges();
+                        await DbClass.entities.Users.AddAsync(ThisUser);
+                        await DbClass.entities.SaveChangesAsync();
                     }
                 });
             }
