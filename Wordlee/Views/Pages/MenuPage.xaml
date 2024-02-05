@@ -31,11 +31,11 @@
             Content="Выйти" Cursor="Hand"/>
         <StackPanel 
             x:Name="spLvl"
-                Grid.Row="1"
-                Grid.ColumnSpan="1"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                Orientation="Horizontal">
+            Grid.Row="1"
+            Grid.ColumnSpan="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Orientation="Horizontal">
                 <Label
                     Content="Выберите уровень"/>
                 <ComboBox
@@ -45,6 +45,7 @@
                     Margin="0 15"
                     Width="90"
                     MaxDropDownHeight="200"
+                    Name="ComboBox"
                     Height="25"/>
         </StackPanel>
         <StackPanel Grid.Row="1"

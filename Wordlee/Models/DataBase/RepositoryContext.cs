@@ -23,11 +23,13 @@ namespace Wordlee.DataBase
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .Build();
-            optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+            //var config = new ConfigurationBuilder()
+            //    .AddJsonFile("appsettings.json")
+            //    .SetBasePath(Directory.GetCurrentDirectory())
+            //    .Build();
+            //optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+            optionsBuilder.UseSqlServer(
+"Data Source=sql.bsite.net\\MSSQL2016;Initial Catalog=rom4k_wordle;User ID=rom4k_wordle;Password=qwerty;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

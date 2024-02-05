@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Wordlee.Commands;
 using Wordlee.DataBase;
@@ -70,7 +71,7 @@ namespace Wordlee.ViewModels
                     }
                     catch
                     {
-                        //
+                        MessageBox.Show("Проверьте подключение к интернету");
                     }
                 });
             }
@@ -108,17 +109,25 @@ namespace Wordlee.ViewModels
             {
                 return _createAccountCommand ??= new RelayCommand(async obj =>
                 {
-                    if(await DbClass.entities.Users.AnyAsync(x => x.Login == ThisUser.Login))
+                    try
                     {
-                        Error = $"Этот логин ({ThisUser.Login}) уже занят, попробуйте еще раз.";
-                        ThisUser.Login = null;
-                        ThisUser.Password = null;
-                        SecondPassword = null;
+                        if (await DbClass.entities.Users.AnyAsync(x => x.Login == ThisUser.Login))
+                        {
+                            Error = $"Этот логин ({ThisUser.Login}) уже занят, попробуйте еще раз.";
+                            ThisUser.Login = null;
+                            ThisUser.Password = null;
+                            SecondPassword = null;
+                        }
+                        else
+                        {
+                            await DbClass.entities.Users.AddAsync(ThisUser);
+                            await DbClass.entities.SaveChangesAsync();
+                            MessageBox.Show("Аккаунт успешно создан!");
+                        }
                     }
-                    else
+                    catch
                     {
-                        await DbClass.entities.Users.AddAsync(ThisUser);
-                        await DbClass.entities.SaveChangesAsync();
+                        MessageBox.Show("Проверьте подключение к интернету");
                     }
                 });
             }

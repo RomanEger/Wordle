@@ -30,5 +30,9 @@ namespace Wordlee.Views.Pages
 
         private void ButtonBack_Click(object sender, RoutedEventArgs e) => MyFrame.frame.GoBack();
 
+        private void GamePage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Box.Focus();
+        }
     }
 }

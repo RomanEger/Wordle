@@ -26,7 +26,7 @@ namespace Wordlee.ViewModels
             get => _selectedWord;
             set
             {
-                _selectedWord = value;
+                _selectedWord = value?.ToUpper();
                 OnPropertyChanged();
             }
         }
@@ -37,14 +37,14 @@ namespace Wordlee.ViewModels
             get => _word;
             set
             {
-                _word = value;
+                _word = value?.ToUpper();
                 OnPropertyChanged();
             }
         }
 
         
-        private List<Word> _listWords;
-        public List<Word> ListWords
+        private static IEnumerable<Word> _listWords;
+        public IEnumerable<Word> ListWords
         {
             get => _listWords;
             set
@@ -54,7 +54,7 @@ namespace Wordlee.ViewModels
             }
         }
 
-        private List<int> _idWords;
+        private static List<int> _idWords;
         public List<int> IdWords
         {
             get => _idWords;
@@ -79,38 +79,55 @@ namespace Wordlee.ViewModels
 
         public WordViewModel()
         {
-            GetWords();
-            if(CurrentUser.UserId == null) return;
-            Resolveds = new ObservableCollection<int>(DbClass.entities.Resolveds.
-                Where(x => x.UserId == CurrentUser.UserId.Value).
-                Select(x => x.WordId).
-                ToList());
+            Start();
+            IsReadOnly = false;
         }
 
-        private void GetWords()
+        private async void Start()
         {
-            ListWords = DbClass.entities.Words.ToList();
-            IdWords = new(ListWords.Capacity);
+            if(_listWords == null || !_listWords.Any())
+                await GetWords();
+            if(CurrentUser.UserId == null) return;
+            await InitResolveds();
+        }
+
+        private async Task GetWords()
+        {
+            ListWords = DbClass.entities.Words.AsEnumerable();
+            IdWords = new(ListWords.Count());
             foreach (var word in _listWords)
             {
                 IdWords.Add(word.Id);
             }
         }
 
+        private async Task InitResolveds()
+        {
+            try
+            {
+                Resolveds = new ObservableCollection<int>(await DbClass.entities.Resolveds.
+                    Where(x => x.UserId == CurrentUser.UserId.Value).
+                    Select(x => x.WordId).ToListAsync());
+            }
+            catch
+            {
+                MessageBox.Show("Проверьте подключение к интернету");
+            }
+        }
+
         public WordViewModel(List<Word> listWords, int selectedIdWord)
         {
             ListWords = listWords;
-            IdWords = new(ListWords.Capacity);
+            IdWords = new(ListWords.Count());
             foreach (var word in _listWords)
                 IdWords.Add(word.Id);
 
             SelectedIdWord = selectedIdWord;
 
             if (CurrentUser.UserId == null) return;
-            Resolveds = new ObservableCollection<int>(DbClass.entities.Resolveds.
-                Where(x => x.UserId == CurrentUser.UserId.Value).
-                Select(x => x.WordId).
-                ToList());
+            InitResolveds();
+            IsReadOnly = false;
+            
         }
 
         private RelayCommand _startCommand;
@@ -137,18 +154,44 @@ namespace Wordlee.ViewModels
                             };
                             if(Resolveds.Contains(SelectedIdWord))
                                 return;
-                            await DbClass.entities.Resolveds.AddAsync(resolved);
-                            await DbClass.entities.SaveChangesAsync();
-                            Resolveds.Add(resolved.WordId);
+                            try
+                            {
+                                await DbClass.entities.Resolveds.AddAsync(resolved);
+                                await DbClass.entities.SaveChangesAsync();
+                                Resolveds.Add(resolved.WordId);
+                            }
+                            catch
+                            {
+                                MessageBox.Show("Проверьте подключение к интернету");
+                            }
                         }
+
+                        IsReadOnly = true;
                         return;
                     }
 
-                    if (ListWords.All(x => x.WordName != Word)) return;
+                    if (ListWords.All(x => !string.Equals(x.WordName, Word, StringComparison.CurrentCultureIgnoreCase))) return;
 
                     SetLetters();
                     SetBColors();
+                    if (_counter > 4)
+                    {
+                        IsReadOnly = true;
+                        MessageBox.Show("Загаданное слово - "+SelectedWord);
+                    }
                 });
+            }
+        }
+
+        private bool _isReadOnly;
+
+        public bool IsReadOnly
+        {
+            get => _isReadOnly;
+            set
+            {
+                _isReadOnly = value;
+                OnPropertyChanged();
             }
         }
 
@@ -205,27 +248,54 @@ namespace Wordlee.ViewModels
         }
 
         private Brush brush;
-
+        
         private void SetBColors()
         {
-            for (int i = 0; i < Word.Length; i++)
+            var dictY = new Dictionary<int, char>();
+            var dictG = new Dictionary<int, char>();
+            var nDict = new Dictionary<int, char>();
+            var dict = new Dictionary<int, char>();
+
+            for (int i = 0; i < SelectedWord.Length; i++)
             {
-                if (SelectedWord.Contains(Word[i]))
+                nDict.Add(i, SelectedWord[i]);
+                dict.Add(i, Word[i]);
+            }
+
+            foreach (var item in dict)
+            {
+                if (item.Value == nDict[item.Key])
                 {
-                    if (SelectedWord.IndexOf(Word[i], i) == i)
-                    {
-                        brush = new SolidColorBrush(Color.FromRgb(0, 255, 0));
-                        var s = $"BColor{_counter}{i}";
-                        typeof(WordViewModel).GetProperty(s)?.SetValue(this, brush);
-                    }
-                    else
-                    {
-                        brush = new SolidColorBrush(Color.FromRgb(255, 255, 0));
-                        var s = $"BColor{_counter}{i}";
-                        typeof(WordViewModel).GetProperty(s)?.SetValue(this, brush);
-                    }
+                    dictG.Add(item.Key, item.Value);
+                    dict.Remove(item.Key);
+                    nDict.Remove(item.Key);
                 }
             }
+
+            foreach (var item in dict)
+            {
+                if (nDict.ContainsValue(item.Value))
+                {
+                    dictY.Add(item.Key, item.Value);
+                    dict.Remove(item.Key);
+                    nDict.Remove(nDict.First(x => x.Value == item.Value).Key);
+                }
+            }
+
+            foreach (var item in dictG)
+            {
+                brush = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+                var s = $"BColor{_counter}{item.Key}";
+                typeof(WordViewModel).GetProperty(s)?.SetValue(this, brush);
+            }
+
+            foreach (var item in dictY)
+            {
+                brush = new SolidColorBrush(Color.FromRgb(255, 255, 0));
+                var s = $"BColor{_counter}{item.Key}";
+                typeof(WordViewModel).GetProperty(s)?.SetValue(this, brush);
+            }
+
             Word = string.Empty;
 
             _counter++;

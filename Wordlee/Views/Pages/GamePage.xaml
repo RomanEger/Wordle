@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Wordlee.Views.Pages"
       mc:Ignorable="d" 
+      Loaded="GamePage_OnLoaded"
       d:DesignHeight="450" d:DesignWidth="600"
       Title="GamePage">
 
@@ -46,7 +47,11 @@
                 Width="90"
                 Click="Button_Click"
                 Content="Выйти" Cursor="Hand"/>
-        <StackPanel Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="0 5">
+        <StackPanel 
+            FocusManager.FocusedElement="{Binding ElementName=Box}"
+            Grid.ColumnSpan="3"
+            HorizontalAlignment="Center"
+            Margin="0 5">
             <StackPanel Margin="15" Orientation="Horizontal">
                 <TextBox Background="{Binding BColor00}" Text="{Binding L00, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBox Background="{Binding BColor01}" Text="{Binding L01, UpdateSourceTrigger=PropertyChanged}"/>
@@ -83,11 +88,11 @@
                 <TextBox Background="{Binding BColor44}" Text="{Binding L44, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
             <TextBox 
-                x:Name="tb"
+                x:Name="Box"
                 Text="{Binding Word, UpdateSourceTrigger=PropertyChanged}"
                 Margin="0 15"
                 Height="25"
-                IsReadOnly="False"
+                IsReadOnly="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged}"
                 MaxLength="5"
                 Width="200"
                 >
