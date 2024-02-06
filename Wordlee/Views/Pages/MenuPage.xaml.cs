@@ -30,11 +30,12 @@ namespace Wordlee.Views.Pages
             DataContext = vm;
             try
             {
+                if(vm.SelectedIdWord > 0) return;
                 vm.SelectedIdWord = Convert.ToInt32(ComboBox.SelectedItem);
             }
             catch
             {
-                vm.SelectedIdWord = 1;
+                //
             }
         }
 

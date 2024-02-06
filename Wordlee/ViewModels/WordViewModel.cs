@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.SqlTypes;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -65,7 +63,7 @@ namespace Wordlee.ViewModels
             }
         }
 
-        private int _selectedIdWord;
+        private static int _selectedIdWord;
         public int SelectedIdWord
         {
             get => _selectedIdWord;
@@ -93,7 +91,7 @@ namespace Wordlee.ViewModels
 
         private async Task GetWords()
         {
-            ListWords = DbClass.entities.Words.AsEnumerable();
+            ListWords = await DbClass.entities.Words.ToListAsync();
             IdWords = new(ListWords.Count());
             foreach (var word in _listWords)
             {
@@ -115,31 +113,18 @@ namespace Wordlee.ViewModels
             }
         }
 
-        public WordViewModel(List<Word> listWords, int selectedIdWord)
-        {
-            ListWords = listWords;
-            IdWords = new(ListWords.Count());
-            foreach (var word in _listWords)
-                IdWords.Add(word.Id);
-
-            SelectedIdWord = selectedIdWord;
-
-            if (CurrentUser.UserId == null) return;
-            InitResolveds();
-            IsReadOnly = false;
-            
-        }
-
         private RelayCommand _startCommand;
-        public RelayCommand StartCommand =>_startCommand ??= new RelayCommand(obj => MyFrame.Navigate(new GamePage(this)));
+        public RelayCommand StartCommand =>_startCommand ??= new RelayCommand(_ => MyFrame.Navigate(new GamePage(this)));
 
         private RelayCommand _enterCommand;
         public RelayCommand EnterCommand
         {
             get
             {
-                return _enterCommand ??= new RelayCommand(async obj =>
+                return _enterCommand ??= new RelayCommand(async _ =>
                 {
+                    SelectedWord ??= ListWords.FirstOrDefault(x => x.Id == SelectedIdWord)?.WordName;
+
                     if (SelectedWord == Word)
                     {
                         SetLetters();
@@ -247,7 +232,7 @@ namespace Wordlee.ViewModels
             }
         }
 
-        private Brush brush;
+        private Brush _brush;
         
         private void SetBColors()
         {
@@ -284,16 +269,16 @@ namespace Wordlee.ViewModels
 
             foreach (var item in dictG)
             {
-                brush = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+                _brush = new SolidColorBrush(Color.FromRgb(0, 255, 0));
                 var s = $"BColor{_counter}{item.Key}";
-                typeof(WordViewModel).GetProperty(s)?.SetValue(this, brush);
+                typeof(WordViewModel).GetProperty(s)?.SetValue(this, _brush);
             }
 
             foreach (var item in dictY)
             {
-                brush = new SolidColorBrush(Color.FromRgb(255, 255, 0));
+                _brush = new SolidColorBrush(Color.FromRgb(255, 255, 0));
                 var s = $"BColor{_counter}{item.Key}";
-                typeof(WordViewModel).GetProperty(s)?.SetValue(this, brush);
+                typeof(WordViewModel).GetProperty(s)?.SetValue(this, _brush);
             }
 
             Word = string.Empty;
@@ -301,8 +286,11 @@ namespace Wordlee.ViewModels
             _counter++;
         }
 
-        public ObservableCollection<int> Resolveds { get; 
-            set; }
+        public ObservableCollection<int> Resolveds 
+        {
+            get; 
+            set;
+        }
 
     }
 }
