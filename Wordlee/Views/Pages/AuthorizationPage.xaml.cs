@@ -26,6 +26,7 @@ namespace Wordlee.Views.Pages
             InitializeComponent();
             DataContext = new UserViewModel();
             Application.Current.MainWindow.Width = 500;
+            Application.Current.MainWindow.Height = 450;
         }
     }
 }

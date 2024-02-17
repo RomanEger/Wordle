@@ -24,12 +24,16 @@ namespace Wordlee.Views.Pages
         {
             InitializeComponent();
             DataContext = vm;
+            Application.Current.MainWindow.Width = 600;
+            Application.Current.MainWindow.Height = 450;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e) => MyFrame.Exit();
-
-        private void ButtonBack_Click(object sender, RoutedEventArgs e) => MyFrame.frame.GoBack();
-
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if(MessageBox.Show("Вы уверены, что хотите выйти?", "", MessageBoxButton.YesNo) == MessageBoxResult.No) return;
+            MyFrame.Exit();
+        } 
+        
         private void GamePage_OnLoaded(object sender, RoutedEventArgs e)
         {
             Box.Focus();

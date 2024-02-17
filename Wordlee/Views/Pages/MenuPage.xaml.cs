@@ -24,19 +24,10 @@ namespace Wordlee.Views.Pages
     {
         private void OnStart()
         {
-            Application.Current.MainWindow.Width = 600;
-            Application.Current.MainWindow.Height = 350;
+            Application.Current.MainWindow.Width = 400;
+            Application.Current.MainWindow.Height = 300;
             var vm = new WordViewModel();
             DataContext = vm;
-            try
-            {
-                if(vm.SelectedIdWord > 0) return;
-                vm.SelectedIdWord = Convert.ToInt32(ComboBox.SelectedItem);
-            }
-            catch
-            {
-                //
-            }
         }
 
         public MenuPage()
@@ -48,12 +39,11 @@ namespace Wordlee.Views.Pages
 
         private void MenuPage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            
             if (CurrentUser.UserId == null)
-            {
                 spResults.Visibility = Visibility.Hidden;
-                spLvl.SetValue(Grid.ColumnSpanProperty, 2);
-            }
+            else
+                spResults.Visibility = Visibility.Visible;
+            
             OnStart();
         }
     }

@@ -84,7 +84,9 @@ namespace Wordlee.ViewModels
             {
                 return _guestCommand ??= new RelayCommand(obj =>
                 {
-                    MyFrame.Navigate(new MenuPage());
+                    var vm = new WordViewModel();
+                    vm.StartCommand.Execute(null);
+                    MyFrame.Navigate(new GamePage(vm));
                     ThisUser = new User();
                 });
             }
