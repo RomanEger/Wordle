@@ -86,7 +86,6 @@ namespace Wordlee.ViewModels
                 {
                     var vm = new WordViewModel();
                     vm.StartCommand.Execute(null);
-                    MyFrame.Navigate(new GamePage(vm));
                     ThisUser = new User();
                 });
             }

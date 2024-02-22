@@ -2,6 +2,7 @@
 using Wordlee.DataBase;
 using Wordlee.Models;
 using Wordlee.Services;
+using Wordlee.ViewModels;
 using Wordlee.Views.Pages;
 
 namespace Wordlee
@@ -17,7 +18,8 @@ namespace Wordlee
             ResizeMode = ResizeMode.CanMinimize;
             DbClass.entities = new RepositoryContext();
             MyFrame.frame = MainFrame;
-            MyFrame.Navigate(new AuthorizationPage());
+            WordViewModel viewModel = new WordViewModel();
+            viewModel.StartCommand.Execute(0);
         }
     }
 }

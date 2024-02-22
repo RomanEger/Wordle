@@ -16,9 +16,27 @@ namespace Wordlee.ViewModels
 {
     public partial class WordViewModel : ViewModelBase
     {
+        public WordViewModel()
+        {
+            VisibilityProp = Visibility.Hidden;
+            IsReadOnly = false;
+        }
+
         private Brush _brush;
 
         private int _counter;
+
+        private Visibility _visibility;
+        public Visibility VisibilityProp
+        {
+            get => _visibility;
+            set
+            {
+                _visibility = value;
+                OnPropertyChanged(nameof(VisibilityProp));
+                OnPropertyChanged(nameof(EnterCommand));
+            }
+        }
 
         private string _selectedWord;
         public string SelectedWord
@@ -54,10 +72,6 @@ namespace Wordlee.ViewModels
             }
         }
 
-        public WordViewModel()
-        {
-            IsReadOnly = false;
-        }
 
         public RelayCommand StartCommand =>
             new (_ =>
@@ -73,27 +87,50 @@ namespace Wordlee.ViewModels
                     MessageBox.Show("Проверьте подключение к интернету");
                 }
             });
+        
+        public RelayCommand RestartCommand =>
+            new (_ =>
+            {
+                try
+                {
+                    var obj = new WordViewModel();
+                    var word = DbClass.entities.Words.FromSqlRaw("SELECT TOP 1 * FROM Word ORDER BY NEWID()").First();
+                    obj.SelectedWord = word.WordName;
+                    MyFrame.Navigate(new GamePage(obj));
+                }
+                catch
+                {
+                    MessageBox.Show("Проверьте подключение к интернету");
+                }
+            });
 
         public RelayCommand EnterCommand =>
             new (_ =>
             {
-
+                if (Word.Length < 5)
+                    return;
                 if (SelectedWord == Word)
                 {
                     SetLetters();
                     SetBColors();
                     MessageBox.Show("Победа!");
                     IsReadOnly = true;
+                    VisibilityProp = Visibility.Visible;
                     return;
                 }
 
-                if(!DbClass.entities.Words.Any(x => x.WordName == Word)) return;
+                if (!DbClass.entities.Words.Any(x => x.WordName == Word))
+                {
+                    MessageBox.Show("Такого слова не существует!");
+                    return;
+                }
                 SetLetters();
                 SetBColors();
                 if (_counter > 4)
                 {
                     IsReadOnly = true;
                     MessageBox.Show("Загаданное слово - "+SelectedWord);
+                    VisibilityProp = Visibility.Visible;
                 }
             });
 

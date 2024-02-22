@@ -93,6 +93,11 @@
                 </TextBox.InputBindings>
             </TextBox>
 
+            <Button 
+                Visibility="{Binding VisibilityProp, UpdateSourceTrigger=PropertyChanged}"
+                Command="{Binding RestartCommand}"
+                Content="Новое слово"
+                Background="LightGreen"/>
         </StackPanel>
         
     </Grid>
