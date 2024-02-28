@@ -17,7 +17,7 @@ namespace Wordlee
             ResizeMode = ResizeMode.CanMinimize;
             DbClass.entities = new RepositoryContext();
             MyFrame.frame = MainFrame;
-            MyFrame.Navigate(new AuthorizationPage());
+            MyFrame.Navigate(new MenuPage());
         }
     }
 }

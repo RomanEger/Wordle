@@ -15,16 +15,6 @@ namespace Wordlee.ViewModels
 {
     class UserViewModel : ViewModelBase
     {
-        private User _thisUser;
-        public User ThisUser
-        {
-            get => _thisUser;
-            set
-            {
-                _thisUser = value;
-                OnPropertyChanged();
-            }
-        }
 
         private string _secondPassword;
         public string SecondPassword
@@ -47,35 +37,6 @@ namespace Wordlee.ViewModels
                 OnPropertyChanged();
             }
         }
-        private RelayCommand _loginCommand;
-        public RelayCommand LoginCommand
-        {
-            get
-            {
-                return _loginCommand ??= new RelayCommand(async obj =>
-                {
-                    try
-                    {
-                        var q = await DbClass.entities.Users.FirstOrDefaultAsync(x => x.Login == ThisUser.Login && x.Password == ThisUser.Password) ?? null;
-                        if (q != null)
-                        {
-                            CurrentUser.UserId = q.Id;
-                            MyFrame.Navigate(new MenuPage());
-                            ThisUser = new User();
-                        }
-                        else
-                        {
-                            Error = "Неправильный логин или пароль";
-                            ThisUser.Password = null;
-                        }
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Проверьте подключение к интернету");
-                    }
-                });
-            }
-        }
 
         private RelayCommand _guestCommand;
         public RelayCommand GuestCommand
@@ -87,57 +48,8 @@ namespace Wordlee.ViewModels
                     var vm = new WordViewModel();
                     vm.StartCommand.Execute(null);
                     MyFrame.Navigate(new GamePage(vm));
-                    ThisUser = new User();
                 });
             }
-        }
-
-        private RelayCommand _registrationCommand;
-        public RelayCommand RegistrationCommand
-        {
-            get
-            {
-                return _registrationCommand ??= new RelayCommand(obj => 
-                {
-                    MyFrame.Navigate(new RegistrationPage());
-                });
-            }
-        }
-
-        private RelayCommand _createAccountCommand;
-        public RelayCommand CreateAccountCommand
-        {
-            get
-            {
-                return _createAccountCommand ??= new RelayCommand(async obj =>
-                {
-                    try
-                    {
-                        if (await DbClass.entities.Users.AnyAsync(x => x.Login == ThisUser.Login))
-                        {
-                            Error = $"Этот логин ({ThisUser.Login}) уже занят, попробуйте еще раз.";
-                            ThisUser.Login = null;
-                            ThisUser.Password = null;
-                            SecondPassword = null;
-                        }
-                        else
-                        {
-                            await DbClass.entities.Users.AddAsync(ThisUser);
-                            await DbClass.entities.SaveChangesAsync();
-                            MessageBox.Show("Аккаунт успешно создан!");
-                        }
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Проверьте подключение к интернету");
-                    }
-                });
-            }
-        }
-
-        public UserViewModel()
-        {
-            ThisUser = new User();
         }
     }
 }

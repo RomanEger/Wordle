@@ -39,11 +39,6 @@ namespace Wordlee.Views.Pages
 
         private void MenuPage_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (CurrentUser.UserId == null)
-                spResults.Visibility = Visibility.Hidden;
-            else
-                spResults.Visibility = Visibility.Visible;
-            
             OnStart();
         }
     }

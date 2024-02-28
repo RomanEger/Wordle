@@ -24,29 +24,13 @@
             Width="90"
             Click="Button_Click"
             Content="Выйти" Cursor="Hand"/>
-        
+
         <StackPanel Grid.Row="1"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center">
             <Button Content="Начать"
                     Command="{Binding StartCommand}"
                     Background="#FF16E416"/>
-        </StackPanel>
-        <StackPanel 
-            Orientation="Horizontal"
-            HorizontalAlignment="Right"
-            x:Name="spResults"
-            Grid.Row="1"
-            VerticalAlignment="Top">
-            <Label Content="Пройденные уровни:"/>
-            <ListBox
-                Height="auto"
-                MaxHeight="193"
-                FontSize="10"
-                BorderThickness="1"
-                Margin="5 15"
-                ItemsSource="{Binding Resolveds}"
-                Width="50"/>
         </StackPanel>
     </Grid>
 </Page>
